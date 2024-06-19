@@ -2,9 +2,7 @@ import numpy as np
 import os.path as path
 import copy
 
-from scipy.spatial import ConvexHull as sphull
-
-from utils.deg2grad import deg2grad, rad2deg
+from utils.deg2grad import rad2deg
 
 
 ###############################################
@@ -13,6 +11,7 @@ from utils.deg2grad import deg2grad, rad2deg
 
 ## IMPORT DEFAULT CONFIG IN CASE NEW PARAMETERS EXIST
 from shape_config import load_config
+from factories.engine_factories import get_engine
 
 
 shape_conf = load_config()
@@ -24,32 +23,7 @@ else:
     save_path = path.join(r"..", "things", shape_conf.save_dir)
     parts_path = path.join(r"..", r"..", "src", "parts")
 
-###############################################
-# END EXTREMELY UGLY BOOTSTRAP
-###############################################
-
-####################################################
-# HELPER FUNCTIONS TO MERGE CADQUERY AND OPENSCAD
-####################################################
-
-# Really rough setup.  Check for ENGINE, set it not present from configuration.
-try:
-    print("Found Current Engine in Config = {}".format(shape_conf.ENGINE))
-except Exception:
-    print("Engine Not Found in Config")
-    shape_conf.ENGINE = "solid"
-    # ENGINE = 'cadquery'
-    print("Setting Current Engine = {}".format(shape_conf.ENGINE))
-
-if shape_conf.ENGINE == "cadquery":
-    from helpers_cadquery import *
-else:
-    from helpers_solid import *
-
-####################################################
-# END HELPER FUNCTIONS
-####################################################
-
+engine = get_engine
 
 debug_exports = False
 debug_trace = False
@@ -60,7 +34,7 @@ def debugprint(info):
         print(info)
 
 
-if oled_mount_type is not None and oled_mount_type != "NONE":
+if shape_conf.oled_mount_type is not None and oled_mount_type != "NONE":
     for item in oled_configurations[oled_mount_type]:
         locals()[item] = oled_configurations[oled_mount_type][item]
 
