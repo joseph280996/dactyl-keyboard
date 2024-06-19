@@ -1,11 +1,11 @@
 import generate_configuration as cfg
 import os
-import getopt, sys
+import getopt
+import sys
 import json
 
-pi = 3.14159
-d2r = pi / 180
-r2d = 180 / pi
+from utils.deg2rad import deg2rad
+from numpy import pi
 
 shape_config = {
 
@@ -215,10 +215,10 @@ shape_config = {
     ##   http://patentimages.storage.googleapis.com/EP0219944A2/imgf0002.png
     ## fixed_z overrides the z portion of the column ofsets above.
     ## NOTE: THIS DOESN'T WORK QUITE LIKE I'D HOPED.
-    'fixed_angles':  [d2r * 10, d2r * 10, 0, 0, 0, d2r * -15, d2r * -15],
+    'fixed_angles':  [deg2rad(10), deg2rad(10), 0, 0, 0, deg2rad(-15), deg2rad(-15)],
     'fixed_x':  [-41.5, -22.5, 0, 20.3, 41.4, 65.5, 89.6],  # relative to the middle finger
     'fixed_z':  [12.1, 8.3, 0, 5, 10.7, 14.5, 17.5],
-    'fixed_tenting':  d2r * 0,
+    'fixed_tenting':  deg2rad(0),
 
     #################
     ## Switch Hole ##
